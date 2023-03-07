@@ -1,0 +1,180 @@
+// Файл обнуляющих стилей
+@import "nullstyle.scss";
+
+.wraper {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	overflow: hidden;
+	min-height: 100%;
+	width: 100%;
+}
+body {
+	background: #498cec;
+	//border: 1px solid #979797;
+	font-family: "Poppins";
+	font-size: 25px;
+	font-weight: 400;
+	//line-height: 120%;
+	color: white;
+}
+body.noscrol {
+	overflow: hidden;
+}
+
+main {
+	flex: 1 1 auto;
+}
+
+.contener {
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 0px 10px;
+}
+
+//==================header======================//
+.header {
+	padding: 75px;
+
+	&__contener {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&__info {
+	}
+
+	&__city {
+		font-size: 50px;
+		margin-bottom: 9px;
+	}
+
+	&__select {
+		display: flex;
+		align-items: center;
+		font-size: 18px;
+		mix-blend-mode: normal;
+		opacity: 0.6;
+	}
+
+	&__select-city {
+		cursor: pointer;
+		margin-right: 35px;
+	}
+
+	&__geoloc {
+		cursor: pointer;
+		position: relative;
+		padding-left: 15px;
+		&::before {
+			content: "";
+			position: absolute;
+			top: 6px;
+			left: -5px;
+			width: 15px;
+			height: 15px;
+			background: url(../img/location.svg) no-repeat center/cover;
+		}
+	}
+
+	&__form {
+		position: relative;
+		display: none;
+	}
+
+	&__input {
+		padding: 30px 90px 30px 30px;
+		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+		border-radius: 8px;
+		position: relative;
+		width: 570px;
+		font-size: 30px;
+		color: #000000;
+		border: 2px solid white;
+		&:focus {
+			border: 2px solid #0b6aca;
+		}
+	}
+
+	&__input-btn {
+		font-size: 30px;
+		color: #1086ff;
+		position: absolute;
+		top: 50%;
+		left: 87%;
+		transform: translateY(-50%);
+		z-index: 2;
+		cursor: pointer;
+	}
+
+	&__setting {
+		padding: 10px;
+		cursor: pointer;
+	}
+
+	&__setting-logo {
+	}
+}
+
+//===================main=================//
+.main {
+	margin: auto;
+
+	&__contener {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&__top {
+		display: flex;
+		align-items: flex-start;
+		margin: auto;
+			}
+
+	&__temper {
+		font-size: 180px;
+	}
+
+	&__celciy {
+		font-size: 60px;
+	}
+
+	&__inform {
+		text-align: center;
+		margin-bottom: 30px;
+	}
+}
+
+//=====================footer==================//
+
+.footer {
+	margin-bottom: 40px;
+	&__contener {
+	}
+
+	&__items {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	&__name {
+		font-size: 18px;
+		mix-blend-mode: normal;
+		opacity: 0.6;
+		margin-bottom: 10px;
+	}
+
+	&__value {
+	}
+}
+.contener {
+}
