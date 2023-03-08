@@ -130,18 +130,18 @@ async function appWeather(city) {
    } catch (error) {
       console.log(error);
    }
-   }
+}
 appWeather('Костанай')
 
 function lineWind(deg) {
-   if(deg > 337.5) return 'северный';
-   if(deg > 292.5) return 'северо-западный';
-   if(deg > 247.5) return 'западный';
-   if(deg > 202.5) return 'юго-западный';
-   if(deg > 157.5) return 'южный';
-   if(deg > 122.5) return 'юго-восточный';
-   if(deg > 67.5) return 'восточный';
-   if(deg > 22.5) return 'северо-восточный';
+   if (deg > 337.5) return 'северный';
+   if (deg > 292.5) return 'северо-западный';
+   if (deg > 247.5) return 'западный';
+   if (deg > 202.5) return 'юго-западный';
+   if (deg > 157.5) return 'южный';
+   if (deg > 122.5) return 'юго-восточный';
+   if (deg > 67.5) return 'восточный';
+   if (deg > 22.5) return 'северо-восточный';
    return 'северный';
 }
 
@@ -150,34 +150,66 @@ function toUpCase(str) {
 }
 function showWeater(data) {
    temper.innerText = Math.round(data.main.temp)
-   humidity.innerText = data.main.humidity+ '%'
-   pressure.innerText = data.main.pressure+ ' мм рт. ст.'
+   humidity.innerText = data.main.humidity + '%'
+   pressure.innerText = data.main.pressure + ' мм рт. ст.'
    wind.innerText = Math.round(data.wind.speed) + ' м/с, ' + lineWind(data.wind.deg)
-   cloud.innerText = data.clouds.all+ '%'
+   cloud.innerText = data.clouds.all + '%'
    discription.innerText = toUpCase(data.weather[0].description)
    cityTitle.innerText = toUpCase(data.name)
 
 }
 
 locationBtn.addEventListener('click', appLocation)
- function appLocation() {
+function appLocation() {
    const option = {
       enableHigthAccuracy: true,
       timeout: 5000,
       maximmage: 0
-}
-const success = async(pos) => {
-   const crd = pos.coords;
-   console.log(crd);
-   const response = await fetch (`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=e9063f48db2d442bbedfee0d6b7509d7`)
-   const result = await response.json()
-   console.log(result.features[0].properties.city);
-   appWeather(result.features[0].properties.city)
+   }
+   const success = async (pos) => {
+      const crd = pos.coords;
+      console.log(crd);
+      const response = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=e9063f48db2d442bbedfee0d6b7509d7`)
+      const result = await response.json()
+      //console.log(result);
+      appWeather(result.features[0].properties.city)
+   }
+
+   const error = (err) => {
+      console.log(err.code + ' ' + err.message);
+   }
+   navigator.geolocation.getCurrentPosition(success, error, option)
+
 }
 
-const error = (err) => {
-   console.log(err.code + ' ' + err.message);
+const serthCity = document.querySelector('.header__select-city')
+const form = document.querySelector('.header__form')
+const info = document.querySelector('.header__info')
+const inputBtn = document.querySelector('.header__input-btn')
+const input = document.querySelector('.header__input')
+
+serthCity.addEventListener('click', openForm)
+
+function openForm() {
+   info.classList.add('hiden')
+   form.classList.remove('hiden')
+   input.focus()
 }
-    navigator.geolocation.getCurrentPosition(success, error, option)
-   //appWeather(city)
+
+function closeForm() {
+   info.classList.remove('hiden')
+   form.classList.add('hiden')
 }
+
+
+window.addEventListener('click', (e) => {
+   console.log(e.target);
+
+   if (!e.target.classList.contains('header__form')) {
+      closeForm()
+      console.log(e.target);
+   }
+
+
+})
+

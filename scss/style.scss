@@ -9,6 +9,9 @@
 	min-height: 100%;
 	width: 100%;
 }
+.hiden {
+	display: none;
+}
 body {
 	background: #498cec;
 	//border: 1px solid #979797;
@@ -80,7 +83,7 @@ main {
 
 	&__form {
 		position: relative;
-		display: none;
+		//display: none;
 	}
 
 	&__input {
