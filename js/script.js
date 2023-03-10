@@ -60,18 +60,18 @@
 /*===============tab===================================*/
 
 function tabs(elements) {
-  for (let index = 0; index < elements.length; index++) {
-    const item = elements[index];
+   for (let index = 0; index < elements.length; index++) {
+      const item = elements[index];
 
-    item.addEventListener("click", numbActiv);
+      item.addEventListener("click", numbActiv);
 
-    function numbActiv() {
-      elements.forEach(element => {
-        element.classList.remove('active')
-      });
-      item.classList.add('active')
-    }
-  }
+      function numbActiv() {
+         elements.forEach(element => {
+            element.classList.remove('active')
+         });
+         item.classList.add('active')
+      }
+   }
 }
 
 const deg = document.querySelectorAll('.deg');
@@ -90,33 +90,31 @@ const popupBg = document.querySelector('.popup__bg')
 settingsBtn.addEventListener('click', openPopup)
 
 function openPopup() {
-  popup.classList.add('active')
-  body.classList.add('scroll')
-  popupBg.classList.add('active')
+   popup.classList.add('active')
+   body.classList.add('scroll')
+   popupBg.classList.add('active')
 }
 
 settingsCloseBtn.addEventListener('click', closePopup)
 
 function closePopup() {
-  popup.classList.remove('active')
-  body.classList.remove('scroll')
-  popupBg.classList.remove('active')
+   popup.classList.remove('active')
+   body.classList.remove('scroll')
+   popupBg.classList.remove('active')
 }
 
 window.addEventListener('click', closePopupWin)
 
 function closePopupWin(event) {
-   console.log(event.target);
    if (event.target.classList.contains('header__setting-logo')) {
       return;
    }
-   
-  else if (event.target.classList.contains('popup__bg')) {
-   console.log(event.target);
-    popup.classList.remove('active')
-    body.classList.remove('scroll')
-    popupBg.classList.remove('active')
-  }
+
+   else if (event.target.classList.contains('popup__bg')) {
+      popup.classList.remove('active')
+      body.classList.remove('scroll')
+      popupBg.classList.remove('active')
+   }
 }
 
 /*===============popup=================================*/
@@ -132,11 +130,11 @@ const img = document.querySelector('.main__img')
 
 const APIkey = '92f66a5c06e43b7bf134889afb03cc8c'
 //const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`
-
+let result
 async function appWeather(city) {
    try {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`)
-      const result = await response.json()
+     result = await response.json()
       console.log(result.message || result);
       showWeater(result)
    } catch (error) {
@@ -165,7 +163,7 @@ function showWeater(data) {
       main: { pressure: press }, wind: { speed }, wind: { deg },
       clouds: { all }, weather: [{ description: descr }], name: nameC,
       weather: [{ icon }] } = data;
-  
+
    temper.innerText = Math.round(temp)
    humidity.innerText = hum + '%'
    pressure.innerText = press + ' мм рт. ст.'
@@ -236,9 +234,7 @@ function newCity() {
    if (!input.value) return;
    appWeather(input.value)
    closeForm()
-   console.log(input.value);
    input.value = "";
-   console.log(input.value);
 }
 //===========================newCity==============================//
 //===========================new settings=========================//
@@ -247,7 +243,24 @@ const newSettingsBtn = document.querySelector('.popup__btn')
 newSettingsBtn.addEventListener('click', newSettings)
 
 function newSettings() {
-   
+   color.forEach(elem => {
+      if (elem.classList.contains('active')) {
+         const newColor = elem.getAttribute('data-set')
+         body.style.backgroundColor = newColor;
+      };
+   })
+   deg.forEach(elem => {
+      if (elem.classList.contains('active')) {
+         const metric = elem.getAttribute('data-set')
+         console.log(metric);
+         if (metric == 'celciy') {
+            temper.innerText = Math.round(result.main.temp)
+         }
+         else {
+            temper.innerText = ((Math.round(result.main.temp) * 9) / 5) + 32
+         }
+      }
+   })
    closePopup()
 }
 
