@@ -6,6 +6,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="../meteo/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../meteo/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../meteo/img/favicon-16x16.png">
+	<link rel="manifest" href="../meteo/img/site.webmanifest">
+	<link rel="mask-icon" href="../meteo/img/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
 	<title>meteo</title>
 </head>
 
@@ -39,6 +46,29 @@
 					</div>
 				</div>
 			</div>
+			<div class="popup">
+				<div class="popup__top">
+					<div class="popup__title">настройки</div>
+					<div class="popup__close">X</div>
+				</div>
+				<div class="popup__metric">
+					<div class="popup__title2">Еденицы измерения</div>
+					<div class="popup__info">
+						<div class="popup__celciy deg ov active">°C</div>
+						<div class="popup__fareng deg ov">°F</div>
+					</div>
+				</div>
+				<div class="popup__color">
+					<div class="popup__title2">Цвет фона</div>
+					<div class="popup__info">
+						<div class="popup__col1 color ov active"></div>
+						<div class="popup__col2 color ov"></div>
+						<div class="popup__col3 color ov"></div>
+					</div>
+				</div>
+				<div class="popup__btn">применить</div>
+			</div>
+			<div class="popup__bg"></div>
 		</header>
 		<main>
 			<div class="main__contener contener">
@@ -46,7 +76,10 @@
 					<div class="main__temper">19</div>
 					<div class="main__celciy">o</div>
 				</div>
-				<div class="main__inform">Преимущественно солнечно</div>
+				<div class="main__discr">
+					<div class="main__image"><img class="main__img"></div>
+					<div class="main__inform">Преимущественно солнечно</div>
+				</div>
 			</div>
 		</main>
 		<footer class="footer">

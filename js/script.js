@@ -59,53 +59,65 @@
 
 /*===============tab===================================*/
 
-// function tabs(elements) {
-//   for (let index = 0; index < elements.length; index++) {
-//     const item = elements[index];
+function tabs(elements) {
+  for (let index = 0; index < elements.length; index++) {
+    const item = elements[index];
 
-//     item.addEventListener("click", numbActiv);
+    item.addEventListener("click", numbActiv);
 
-//     function numbActiv() {
-//       elements.forEach(element => {
-//         element.classList.remove('active')
-//       });
-//       item.classList.add('active')
-//     }
-//   }
-// }
+    function numbActiv() {
+      elements.forEach(element => {
+        element.classList.remove('active')
+      });
+      item.classList.add('active')
+    }
+  }
+}
 
-// const fn = document.querySelectorAll('.fn');
-//tabs(fn)
+const deg = document.querySelectorAll('.deg');
+tabs(deg)
+const color = document.querySelectorAll('.color');
+tabs(color)
 /*===============tab===================================*/
 
 /*===============popup=================================*/
-//const body = document.body
-// const popup = document.querySelector('.popup')
-// const settingsBtn = document.querySelector('.settings')
-// const settingsCloseBtn = document.querySelector('.settings__bott')
+const body = document.body
+const popup = document.querySelector('.popup')
+const settingsBtn = document.querySelector('.header__setting-logo')
+const settingsCloseBtn = document.querySelector('.popup__close')
+const popupBg = document.querySelector('.popup__bg')
 
-// settingsBtn.addEventListener('click', openPopup)
+settingsBtn.addEventListener('click', openPopup)
 
-// function openPopup() {
-//   popup.classList.add('active')
-//   body.classList.add('scroll')
-// }
+function openPopup() {
+  popup.classList.add('active')
+  body.classList.add('scroll')
+  popupBg.classList.add('active')
+}
 
-// settingsCloseBtn.addEventListener('click', closePopup)
+settingsCloseBtn.addEventListener('click', closePopup)
 
-// function closePopup() {
-//   popup.classList.remove('active')
-//   body.classList.remove('scroll')
-// }
+function closePopup() {
+  popup.classList.remove('active')
+  body.classList.remove('scroll')
+  popupBg.classList.remove('active')
+}
 
-// window.addEventListener('click', closePopupWin)
+window.addEventListener('click', closePopupWin)
 
-// function closePopupWin(event) {
-//   if (event.target == popup) {
-//     popup.classList.remove('active')
-//     body.classList.remove('scroll')
-//   }
-// }
+function closePopupWin(event) {
+   console.log(event.target);
+   if (event.target.classList.contains('header__setting-logo')) {
+      return;
+   }
+   
+  else if (event.target.classList.contains('popup__bg')) {
+   console.log(event.target);
+    popup.classList.remove('active')
+    body.classList.remove('scroll')
+    popupBg.classList.remove('active')
+  }
+}
 
 /*===============popup=================================*/
 const temper = document.querySelector('.main__temper')
@@ -116,8 +128,8 @@ const cloud = document.querySelector('#cloud')
 const discription = document.querySelector('.main__inform')
 const locationBtn = document.querySelector('.header__geoloc')
 const cityTitle = document.querySelector('.header__city')
+const img = document.querySelector('.main__img')
 
-//const city = 'Костанай'
 const APIkey = '92f66a5c06e43b7bf134889afb03cc8c'
 //const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`
 
@@ -125,7 +137,7 @@ async function appWeather(city) {
    try {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`)
       const result = await response.json()
-      console.log(result);
+      console.log(result.message || result);
       showWeater(result)
    } catch (error) {
       console.log(error);
@@ -149,14 +161,19 @@ function toUpCase(str) {
    return str[0].toUpperCase() + str.slice(1)
 }
 function showWeater(data) {
-   temper.innerText = Math.round(data.main.temp)
-   humidity.innerText = data.main.humidity + '%'
-   pressure.innerText = data.main.pressure + ' мм рт. ст.'
-   wind.innerText = Math.round(data.wind.speed) + ' м/с, ' + lineWind(data.wind.deg)
-   cloud.innerText = data.clouds.all + '%'
-   discription.innerText = toUpCase(data.weather[0].description)
-   cityTitle.innerText = toUpCase(data.name)
-
+   const { main: { temp: temp }, main: { humidity: hum },
+      main: { pressure: press }, wind: { speed }, wind: { deg },
+      clouds: { all }, weather: [{ description: descr }], name: nameC,
+      weather: [{ icon }] } = data;
+  
+   temper.innerText = Math.round(temp)
+   humidity.innerText = hum + '%'
+   pressure.innerText = press + ' мм рт. ст.'
+   wind.innerText = Math.round(speed) + ' м/с, ' + lineWind(deg)
+   cloud.innerText = all + '%'
+   discription.innerText = toUpCase(descr)
+   cityTitle.innerText = toUpCase(nameC)
+   img.src = `http://openweathermap.org/img/w/${icon}.png`
 }
 
 locationBtn.addEventListener('click', appLocation)
@@ -171,7 +188,7 @@ function appLocation() {
       console.log(crd);
       const response = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=e9063f48db2d442bbedfee0d6b7509d7`)
       const result = await response.json()
-      //console.log(result);
+      console.log(result);
       appWeather(result.features[0].properties.city)
    }
 
@@ -179,13 +196,13 @@ function appLocation() {
       console.log(err.code + ' ' + err.message);
    }
    navigator.geolocation.getCurrentPosition(success, error, option)
-
 }
 
+
+//===========================openForm=============================//
 const serthCity = document.querySelector('.header__select-city')
 const form = document.querySelector('.header__form')
 const info = document.querySelector('.header__info')
-const inputBtn = document.querySelector('.header__input-btn')
 const input = document.querySelector('.header__input')
 
 serthCity.addEventListener('click', openForm)
@@ -203,13 +220,35 @@ function closeForm() {
 
 
 window.addEventListener('click', (e) => {
-   console.log(e.target);
-
-   if (!e.target.classList.contains('header__form')) {
-      closeForm()
-      console.log(e.target);
+   if (e.target.classList.contains('header__select-city')) {
+      return;
    }
-
-
+   else if (!e.target.closest('.header__form') && !form.classList.contains('hiden')) {
+      closeForm()
+   }
 })
+//===========================openForm=============================//
+//===========================newCity==============================//
+const inputBtn = document.querySelector('.header__input-btn')
 
+inputBtn.addEventListener('click', newCity)
+function newCity() {
+   if (!input.value) return;
+   appWeather(input.value)
+   closeForm()
+   console.log(input.value);
+   input.value = "";
+   console.log(input.value);
+}
+//===========================newCity==============================//
+//===========================new settings=========================//
+const newSettingsBtn = document.querySelector('.popup__btn')
+
+newSettingsBtn.addEventListener('click', newSettings)
+
+function newSettings() {
+   
+   closePopup()
+}
+
+//===========================new settings=========================//
