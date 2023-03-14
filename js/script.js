@@ -74,8 +74,8 @@ function tabs(elements) {
    }
 }
 
-const deg = document.querySelectorAll('.deg');
-tabs(deg)
+const degs = document.querySelectorAll('.degs');
+tabs(degs)
 const color = document.querySelectorAll('.color');
 tabs(color)
 /*===============tab===================================*/
@@ -128,20 +128,38 @@ const locationBtn = document.querySelector('.header__geoloc')
 const cityTitle = document.querySelector('.header__city')
 const img = document.querySelector('.main__img')
 
+
 const APIkey = '92f66a5c06e43b7bf134889afb03cc8c'
+async function appWeather2(lat, lon) {
+   try {
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=${APIkey}&lang=ru&units=metric`)
+     result = await response.json()
+     console.log(result.message || result);
+      showWeater(result)
+   } catch (error) {
+      console.log(error);
+   }
+}
+
 //const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`
 let result
 async function appWeather(city) {
    try {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&lang=ru&units=metric`)
      result = await response.json()
-      console.log(result.message || result);
+     // console.log(result.message || result);
       showWeater(result)
    } catch (error) {
       console.log(error);
    }
 }
-appWeather('Костанай')
+if(localStorage.getItem('city')) {
+   const city = JSON.parse(localStorage.getItem('city'))
+   appWeather(city)
+}
+else {appWeather('Костанай')}
+
+// appWeather('Костанай')
 
 function lineWind(deg) {
    if (deg > 337.5) return 'северный';
@@ -163,7 +181,20 @@ function showWeater(data) {
       main: { pressure: press }, wind: { speed }, wind: { deg },
       clouds: { all }, weather: [{ description: descr }], name: nameC,
       weather: [{ icon }] } = data;
+   
+      if(localStorage.getItem('color')) {
+         const newColor = JSON.parse(localStorage.getItem('color'))
+         body.style.backgroundColor =  newColor;
+         color.forEach(el => {
+            el.classList.remove('active')
+            if(el.getAttribute('data-set') == newColor) {
+               el.classList.add('active')
+            }
+         })
+      }
 
+      
+      
    temper.innerText = Math.round(temp)
    humidity.innerText = hum + '%'
    pressure.innerText = press + ' мм рт. ст.'
@@ -172,9 +203,31 @@ function showWeater(data) {
    discription.innerText = toUpCase(descr)
    cityTitle.innerText = toUpCase(nameC)
    img.src = `http://openweathermap.org/img/w/${icon}.png`
+
+   if(localStorage.getItem('metric')) {
+      const metric = JSON.parse(localStorage.getItem('metric'))
+      
+      degs.forEach(el => {
+         el.classList.remove('active')
+         if(el.getAttribute('data-set') ==  metric) {
+            el.classList.add('active')
+         }
+      })
+      if (metric == 'celciy') {
+         temper.innerText = Math.round(result.main.temp)
+         const f = document.querySelector('.main__metric')
+         f.style.display = "none"
+      }
+      else if (metric == 'fareng'){
+         temper.innerText = Math.round((((result.main.temp) * 9) / 5) + 32)
+         const f = document.querySelector('.main__metric')
+         f.style.display = "block"
+      }
+   }
 }
 
 locationBtn.addEventListener('click', appLocation)
+
 function appLocation() {
    const option = {
       enableHigthAccuracy: true,
@@ -184,10 +237,13 @@ function appLocation() {
    const success = async (pos) => {
       const crd = pos.coords;
       console.log(crd);
+      const {latitude: lat, longitude: lon} = crd
       const response = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=e9063f48db2d442bbedfee0d6b7509d7`)
       const result = await response.json()
       console.log(result);
       appWeather(result.features[0].properties.city)
+      //appWeather2(lat, lon)
+      localStorage.setItem('city', JSON.stringify(result.features[0].properties.city))
    }
 
    const error = (err) => {
@@ -199,11 +255,13 @@ function appLocation() {
 
 //===========================openForm=============================//
 const serthCity = document.querySelector('.header__select-city')
+const serthCity2 = document.querySelector('.header__city')
 const form = document.querySelector('.header__form')
 const info = document.querySelector('.header__info')
 const input = document.querySelector('.header__input')
 
 serthCity.addEventListener('click', openForm)
+serthCity2.addEventListener('click', openForm)
 
 function openForm() {
    info.classList.add('hiden')
@@ -218,7 +276,7 @@ function closeForm() {
 
 
 window.addEventListener('click', (e) => {
-   if (e.target.classList.contains('header__select-city')) {
+   if (e.target.classList.contains('header__select-city')|| e.target.classList.contains('header__city')) {
       return;
    }
    else if (!e.target.closest('.header__form') && !form.classList.contains('hiden')) {
@@ -233,6 +291,7 @@ inputBtn.addEventListener('click', newCity)
 function newCity() {
    if (!input.value) return;
    appWeather(input.value)
+   localStorage.setItem('city', JSON.stringify(input.value))
    closeForm()
    input.value = "";
 }
@@ -247,17 +306,24 @@ function newSettings() {
       if (elem.classList.contains('active')) {
          const newColor = elem.getAttribute('data-set')
          body.style.backgroundColor = newColor;
+         localStorage.setItem('color', JSON.stringify(newColor))
+        
       };
    })
-   deg.forEach(elem => {
+   degs.forEach(elem => {
       if (elem.classList.contains('active')) {
          const metric = elem.getAttribute('data-set')
-         console.log(metric);
+         localStorage.setItem('metric', JSON.stringify(metric))
+         
          if (metric == 'celciy') {
             temper.innerText = Math.round(result.main.temp)
+            const f = document.querySelector('.main__metric')
+            f.style.display = "none"
          }
          else {
-            temper.innerText = ((Math.round(result.main.temp) * 9) / 5) + 32
+            temper.innerText = Math.round((((result.main.temp) * 9) / 5) + 32)
+            const f = document.querySelector('.main__metric')
+            f.style.display = "block"
          }
       }
    })

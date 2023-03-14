@@ -1,5 +1,8 @@
 // Файл обнуляющих стилей
 @import "nullstyle.scss";
+@import "stylesheet.scss";
+
+
 
 .wraper {
 	display: flex;
@@ -18,9 +21,9 @@ img {
 body {
 	background: #498cec;
 	//border: 1px solid #979797;
-	font-family: "Poppins";
+	font-family: "Inter";
 	font-size: 25px;
-	font-weight: 400;
+	font-weight: 500;
 	//line-height: 120%;
 	color: white;
 }
@@ -61,11 +64,18 @@ main {
 	&__city {
 		font-size: 50px;
 		margin-bottom: 9px;
+		cursor: pointer;
+		transition: all 0.3s ease 0s;
 		@media (max-width: 780px) {
 			font-size: 46px;
 		}
 		@media (max-width: 500px) {
 			font-size: 40px;
+		}
+		@media (any-hover: hover) {
+			&:hover {
+				color: rgb(23, 48, 131);
+			}
 		}
 	}
 
@@ -74,7 +84,7 @@ main {
 		align-items: center;
 		font-size: 18px;
 		mix-blend-mode: normal;
-		opacity: 0.6;
+		opacity: 0.8;
 		@media (max-width: 440px) {
 			flex-direction: column;
 		}
@@ -82,13 +92,20 @@ main {
 
 	&__select-city {
 		cursor: pointer;
+		transition: all 0.3s ease 0s;
 		margin-right: 35px;
 		@media (max-width: 440px) {
 			margin-bottom: 10px;
 		}
+		@media (any-hover: hover) {
+			&:hover {
+				color: rgb(23, 48, 131);
+			}
+		}
 	}
 
 	&__geoloc {
+		transition: all 0.3s ease 0s;
 		cursor: pointer;
 		position: relative;
 		padding-left: 15px;
@@ -100,6 +117,11 @@ main {
 			width: 15px;
 			height: 15px;
 			background: url(../img/location.svg) no-repeat center/cover;
+		}
+		@media (any-hover: hover) {
+			&:hover {
+				color: rgb(23, 48, 131);
+			}
 		}
 	}
 
@@ -160,7 +182,24 @@ main {
 	}
 
 	&__setting-logo svg {
+		transition: all 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				fill: rgb(23, 48, 131);
+			}
+		}
 		pointer-events: none;
+	}
+
+	&__setting-logo {
+		transition: all 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				.header__setting-logo svg path{
+					fill: rgb(23, 48, 131);
+				}
+			}
+		}
 	}
 }
 
@@ -187,6 +226,19 @@ main {
 	}
 
 	&__temper {
+		font-size: 180px;
+		@media (max-width: 780px) {
+			font-size: 160px;
+		}
+		@media (max-width: 600px) {
+			font-size: 130px;
+		}
+		@media (max-width: 500px) {
+			font-size: 110px;
+		}
+	}
+	&__metric {
+		display: none;
 		font-size: 180px;
 		@media (max-width: 780px) {
 			font-size: 160px;
@@ -240,14 +292,19 @@ main {
 		align-items: flex-start;
 		@media (max-width: 740px) {
 			min-width: 250px;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #fff;
 		}
 	}
 
 	&__name {
 		font-size: 18px;
 		mix-blend-mode: normal;
-		opacity: 0.6;
+		opacity: 0.8;
 		margin-bottom: 10px;
+		@media (max-width: 740px) {
+			margin-bottom: 5px;
+		}
 	}
 
 	&__value {
@@ -255,7 +312,7 @@ main {
 }
 
 //====================popup============================//
-.popup.active , 
+.popup.active,
 .popup__bg.active {
 	display: block;
 }
@@ -272,7 +329,8 @@ main {
 	opacity: 0.3;
 	display: none;
 }
-.ov {
+.ov,
+.ob {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
@@ -283,21 +341,28 @@ main {
 	position: relative;
 	transition: all 0.3s ease 0s;
 	border: 1px solid transparent;
+	cursor: pointer;
+}
+.ob {
+	opacity: 0.5;
+}
+.ob.active {
+	border: 1px solid #091424;
+	opacity: 1;
 }
 .ov.active {
 	border: 1px solid #091424;
 	&::after {
 		position: absolute;
 		content: "✓";
+		font-weight: 700;
 		width: 20px;
 		height: 20px;
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
 		transition: all 0.3s ease 0s;
-		
 	}
-
 }
 .popup {
 	display: none;
@@ -312,7 +377,16 @@ main {
 	border-radius: 10px;
 	padding: 15px;
 	transition: all 0.3s ease 0s;
-
+	@media (max-width: 740px) {
+		width: 80%;
+	}
+	@media (max-width: 500px) {
+		width: 90%;
+	}
+	@media (max-width: 400px) {
+		width: 100%;
+		font-size: 20px;
+	}
 
 	&__top {
 		padding-bottom: 5px;
@@ -380,6 +454,6 @@ main {
 		border-radius: 10px;
 		margin: 20px auto;
 		display: inline-block;
+		cursor: pointer;
 	}
 }
-
